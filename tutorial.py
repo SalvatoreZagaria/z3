@@ -1,4 +1,4 @@
-from z3 import *
+from z3 import Int, Solver, sat
 
 input_matrix = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
 
@@ -51,15 +51,11 @@ def get_solver(matrix):
         for j in range(9):
             if type(matrix[i][j]) != int:
                 s.add(matrix[i][j] >= 1, matrix[i][j] <= 9)
-                for k in get_row_ints(matrix, i):
-                    s.add(matrix[i][j] != k)
-                for k in get_column_ints(matrix, j):
-                    s.add(matrix[i][j] != k)
-                # for k in range(9):
-                #     if j != k and type(matrix[i][k]) != int:
-                #         s.add(matrix[i][j] != matrix[i][k])
-                #     if i != k and type(matrix[k][j]) != int:
-                #         s.add(matrix[i][j] != matrix[k][j])
+                for k in range(9):
+                    if i != k:
+                        s.add(matrix[k][j] != matrix[i][j])
+                    if j != k:
+                        s.add(matrix[i][k] != matrix[i][j])
     return s
 
 
@@ -68,6 +64,16 @@ if __name__ == "__main__":
     if not matrix:
         print("Input matrix not valid.")
     else:
+        print("Input matrix:")
+        for row in matrix:
+            new_row = []
+            for i in row:
+                if type(i) == int:
+                    new_row.append(i)
+                else:
+                    new_row.append("x")
+            print(new_row)
+        print()
         s = get_solver(matrix)
         if s.check() == sat:
             print("Your Sudoku has been solved.")
