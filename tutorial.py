@@ -106,10 +106,10 @@ if __name__ == "__main__":
                 m = s.model()
                 or_condition = get_or_conditions(matrix, m)
                 s.add(Or(or_condition))
-                print("Time taken: {}".format(time.time()-start_time))
-                for d in m.decls():
-                    print(d, int(m[d].as_long()))
-                print()
+                # print("Time taken: {}".format(time.time()-start_time))
+                # for d in m.decls():
+                #     print(d, int(m[d].as_long()))
+                # print()
             else:
                 break
         if n_models > 0:
