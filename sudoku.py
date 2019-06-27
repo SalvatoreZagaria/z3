@@ -1,7 +1,7 @@
-from z3 import Int, Solver, sat, Or, And
+from z3 import Int, Solver, sat, Or, And, Not, simplify
 import time
 
-dimension = 4
+dimension = 3
 
 input_matrix = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
 input_matrix = "."*dimension*dimension
@@ -78,7 +78,7 @@ def get_or_conditions(matrix, m):
     for i in range(dimension):
         for j in range(dimension):
             if type(matrix[i][j]) != int:
-                or_condition.append(m[matrix[i][j]] != matrix[i][j])
+                or_condition.append(m[matrix[i][j]] == matrix[i][j])
     return or_condition
 
 
@@ -96,6 +96,8 @@ if __name__ == "__main__":
                 else:
                     new_row.append("x")
             print(new_row)
+        print()
+        print("Dimensions: {0}x{0}".format(dimension))
         print()
         s = get_solver(matrix)
         n_models = 0
