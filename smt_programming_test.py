@@ -22,27 +22,32 @@ def ex1():
     init = 1
     trans = [(1, 2), (2, 3)]
     final = 3
-    return (init, trans, final)
+    return init, trans, final
 
 
 def ex2():
     init = 1
     trans = [(1, 2), (3, 4), (4, 5)]
     final = 5
-    return (init, trans, final)
+    return init, trans, final
 
 
-def transition_system(n):
+def is_n_reachable(problem, n):
     def transition(i, variables, trans):
-        enc = False
+        enc = []
         for tr in trans:
             src, dst = tr
-            enc = Or(enc, And(variables[i] == src, variables[i+1] == dst))
-        return enc
+            enc.append(And(variables[i] == src, variables[i + 1] == dst))
+        return Or(enc)
+        # enc = False
+        # for tr in trans:
+        #     src, dst = tr
+        #     enc = Or(enc, And(variables[i] == src, variables[i+1] == dst))
+        # return enc
 
-    init, trans, final = ex1()
+    init, trans, final = problem
     s = Solver()
-    variables = [Int(str(i)) for i in range(n+1)]
+    variables = [Int(str(i)) for i in range(n + 1)]
     conditions = [variables[0] == init]
     for i in range(n):
         conditions.append(transition(i, variables, trans))
@@ -51,10 +56,20 @@ def transition_system(n):
     if s.check() == sat:
         print("Sat!")
         print(s.model())
+        return True
     else:
-        print("Unsat.")
+        print(s.check())
+        return False
+
+
+def is_reachable(problem, n):
+    for i in range(n+1):
+        print("Checking {}-reachability...".format(i))
+        if is_n_reachable(problem, i):
+            break
 
 
 if __name__ == "__main__":
     # sum_to_five()
-    transition_system(2)
+    # is_reachable(ex1(), 3)
+    # is_reachable(ex2(), 4)
