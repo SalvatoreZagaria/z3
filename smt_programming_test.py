@@ -70,6 +70,6 @@ def is_reachable(problem, n):
 
 
 if __name__ == "__main__":
-    # sum_to_five()
-    # is_reachable(ex1(), 3)
-    # is_reachable(ex2(), 4)
+    sum_to_five()
+    is_reachable(ex1(), 3)
+    is_reachable(ex2(), 4)
